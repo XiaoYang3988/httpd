@@ -741,6 +741,12 @@ void http_accept_dispose(int32_t client_fd) {
     enum __request_type request_type = NO_REQUEST_TYPE;
 
     http_head = __get_http_head(client_fd);
+    if(http_head == NULL) {
+        bad_request(client_fd);
+        Close(client_fd);
+        return;
+    }
+    
     request_line = __get_http_request_line(http_head);
     file_path = __get_file_absolute_path(&request_line.request_url[0]);
 
